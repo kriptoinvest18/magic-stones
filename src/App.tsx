@@ -25,6 +25,9 @@ import Shop from "./pages/Shop.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
 import CookieBanner from "./components/CookieBanner";
+import QuizPopup from "./components/QuizPopup";
+import ChatWidget from "./components/ChatWidget";
+import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -57,7 +60,10 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <Footer />
         <CookieBanner />
+        <QuizPopup />
+        <ChatWidget />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
