@@ -3,24 +3,44 @@ import { Link } from "react-router-dom";
 import { X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const STORAGE_KEY = "quizPopupShownAt";
+
 const QuizPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isShown, setIsShown] = useState(false);
 
   useEffect(() => {
-    // Показать pop-up через 30 сек после загрузки или при скролле на 50%
-    const timer = setTimeout(() => setIsOpen(true), 30000);
+    const today = new Date().toISOString().split("T")[0];
+    const lastShown = window.localStorage.getItem(STORAGE_KEY);
+
+    if (lastShown === today) {
+      setIsShown(true);
+      return;
+    }
+
+    const openPopup = () => {
+      if (!isShown) {
+        setIsOpen(true);
+        setIsShown(true);
+        window.localStorage.setItem(STORAGE_KEY, today);
+      }
+    };
+
+    const timer = window.setTimeout(openPopup, 30000);
 
     const handleScroll = () => {
       const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent > 50) setIsOpen(true);
+      if (scrollPercent > 50) {
+        openPopup();
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => {
-      clearTimeout(timer);
+      window.clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isShown]);
 
   if (!isOpen) return null;
 
