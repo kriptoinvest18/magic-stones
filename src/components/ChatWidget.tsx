@@ -1,17 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabaseApi } from "@/lib/supabaseApi";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; isBot: boolean }[]>([
-    {
-      text: "Привет! 👋 Я помощник проекта Магия Камней. Какой у тебя вопрос?",
-      isBot: true,
-    },
-  ]);
+  const [messages, setMessages] = useState<{ text: string; isBot: boolean }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string>("");
+
+  // Инициализация userId
+  useEffect(() => {
+    let id = localStorage.getItem("chatUserId");
+    if (!id) {
+      id = `guest_${Date.now()}`;
+      localStorage.setItem("chatUserId", id);
+    }
+    setUserId(id);
+  }, []);
+
+  // Загрузка истории чата при открытии виджета
+  useEffect(() => {
+    if (isOpen && userId) {
+      const loadHistory = async () => {
+        const history = await supabaseApi.getChatHistory(userId);
+        if (history.length > 0) {
+          setMessages(history);
+        } else {
+          setMessages([
+            {
+              text: "Привет! 👋 Я помощник проекта Магия Камней. Какой у тебя вопрос?",
+              isBot: true,
+            },
+          ]);
+        }
+      };
+      loadHistory();
+    }
+  }, [isOpen, userId]);
+
+  // Сохранение сообщений в localStorage для быстрого доступа
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem("chatMessages", JSON.stringify(messages));
+    }
+  }, [messages]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();

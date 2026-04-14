@@ -47,6 +47,26 @@ export const supabaseApi = {
   },
 
   /**
+   * Получить историю чата для пользователя
+   */
+  async getChatHistory(userId?: string): Promise<{ text: string; isBot: boolean }[]> {
+    try {
+      const response = await fetch(`${API_BASE}/api/chat-history?user_id=${userId || `guest_${Date.now()}`}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      if (data.success) {
+        return data.messages || [];
+      }
+      return [];
+    } catch (error) {
+      console.error('Get chat history error:', error);
+      return [];
+    }
+  },
+
+  /**
    * Сохранить результат квиза
    */
   async saveQuizResult(

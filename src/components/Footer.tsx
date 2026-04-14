@@ -50,13 +50,13 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
               <p>© 2026 Магия Камней. Все права защищены.</p>
               <div className="flex gap-4 mt-4 md:mt-0">
-                <a href="https://t.me/magic_stones_official" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                <a href="https://t.me/Magic_ofstone" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   Telegram
                 </a>
-                <a href="https://instagram.com/magic.stones" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                <a href="https://instagram.com/magic.ofstone" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   Instagram
                 </a>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a href="https://t.me/magicstonechat" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                   Контакты
                 </a>
               </div>
